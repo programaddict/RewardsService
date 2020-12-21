@@ -2,12 +2,9 @@ package com.javaaddicts.SpringDataJpaHibernate.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,18 +67,15 @@ public class RewardsService {
 		//build response object
 		for(Rewards e: rewardsByMonth) {
 			Response response= new Response();
-			if(!finalResponseByMonth.isEmpty()) {
-				for(Response resp : finalResponseByMonth) {
-					if(!accountIds.contains(e.getAccountId())) {
-						response.setAccountId(e.getAccountId());
-						response.setFirstName(e.getFirstName());
-						response.setLastName(e.getLastName());
-						response.setRewards(map.get(e.getAccountId()));
-						finalResponseByMonth.add(response);
-						accountIds.add(e.getAccountId());
-					}
-				}	
-			}else {
+			if(finalResponseByMonth.isEmpty()) {
+				response.setAccountId(e.getAccountId());
+				response.setFirstName(e.getFirstName());
+				response.setLastName(e.getLastName());
+				response.setRewards(map.get(e.getAccountId()));
+				finalResponseByMonth.add(response);
+				accountIds.add(e.getAccountId());
+			}
+			else if(!finalResponseByMonth.isEmpty() && !accountIds.contains(e.getAccountId())) {
 				response.setAccountId(e.getAccountId());
 				response.setFirstName(e.getFirstName());
 				response.setLastName(e.getLastName());
